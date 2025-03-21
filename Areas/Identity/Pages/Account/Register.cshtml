@@ -1,0 +1,186 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Cadastre-se";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <h2>Criar uma nova conta</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password">Inserir Senha</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.ConfirmPassword">Confirmar Senha</label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+
+        <!-- Seção de Autenticação Externa -->
+        <div class="col-md-6 mt-4 mt-md-0">
+            <section>
+                <h3>Use outro serviço para se registrar.</h3>
+                <hr />
+                @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            Não há serviços de autenticação externa configurados. Veja este artigo <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                sobre como configurar este aplicativo ASP.NET para dar suporte ao login por meio de serviços externos
+                            </a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                            }
+                        </p>
+                    </form>
+                }
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<style>
+    /* Estilo geral */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #B0E0E6;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Centralizando o conteúdo */
+    .container {
+        margin-top: 5rem;
+    }
+
+    /* Título principal */
+    h1 {
+        color: black;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    /* Formulário */
+    form {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+        form h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    hr {
+        border: 1px solid #007bff;
+        width: 30%;
+        margin: 1rem auto;
+    }
+
+    /* Estilizando os campos de entrada */
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+
+        .form-floating input {
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 12px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .form-floating label {
+            font-weight: 600;
+        }
+
+    /* Estilo de erros */
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+    /* Botão de envio */
+    button#registerSubmit {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 12px;
+        font-size: 1.1rem;
+        width: 100%;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        button#registerSubmit:hover {
+            background-color: #0056b3;
+        }
+
+    /* Estilo do formulário de autenticação externa */
+    section {
+        padding: 1rem;
+        background-color: #f1f1f1;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 3rem;
+    }
+
+    button.btn-primary {
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 8px;
+        margin: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    button.btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        margin: 5px;
+    }
+
+        button.btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+</style>
